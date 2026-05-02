@@ -1,0 +1,16 @@
+{
+  "name": "ethara-ass",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm --prefix client ci --include=dev && npm --prefix client run build && npm --prefix server ci --omit=dev",
+    "start": "node server/src/server.js",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
