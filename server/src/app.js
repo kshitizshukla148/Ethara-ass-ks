@@ -26,11 +26,19 @@ const allowedOrigins = new Set([
 const isAllowedVercelPreview = (origin) =>
   /^https:\/\/ethara-ass(?:-[a-z0-9-]+)?\.vercel\.app$/i.test(origin);
 
+/** Railway deploys use https://<service>.up.railway.app — allow without manual CLIENT_URL. */
+const isAllowedRailway = (origin) => /^https:\/\/[a-z0-9.-]+\.up\.railway\.app$/i.test(origin);
+
 app.use(
   cors({
     origin: (origin, callback) => {
       // Allow non-browser clients (no Origin header), local dev, and configured frontends.
-      if (!origin || allowedOrigins.has(origin) || isAllowedVercelPreview(origin)) {
+      if (
+        !origin ||
+        allowedOrigins.has(origin) ||
+        isAllowedVercelPreview(origin) ||
+        isAllowedRailway(origin)
+      ) {
         return callback(null, true);
       }
       return callback(new Error("Not allowed by CORS"));
